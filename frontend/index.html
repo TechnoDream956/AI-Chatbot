@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Arogya Raksha - Indian Healthcare GenAI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background: linear-gradient(135deg, #0e1628 60%, #13394a 100%);
+        color: #d1d5db;
+        min-height: 100vh;
+      }
+      .pulse-svg {
+        animation: pulseAnim 2.4s infinite;
+      }
+      @keyframes pulseAnim {
+        0%,
+        100% {
+          filter: drop-shadow(0 0 7px #22b2ee88);
+        }
+        50% {
+          filter: drop-shadow(0 0 20px #0eafe988);
+        }
+      }
+      .sectionBG {
+        background: rgba(24, 28, 36, 0.95);
+        border-radius: 1.6rem;
+        box-shadow: 0 4px 32px rgba(61, 129, 255, 0.07);
+        margin-bottom: 2.5rem;
+      }
+      .fade-in {
+        opacity: 0;
+        transform: translateY(60px);
+        transition: 0.9s;
+      }
+      .fade-in.shown {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .shine-title {
+        background: linear-gradient(90deg, #56bdf7, #17d6ad, #43acef);
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        font-weight: 700;
+        letter-spacing: 0.07em;
+      }
+      .feature-card {
+        cursor: pointer;
+        transition: background-color 0.25s;
+      }
+      .feature-card:hover {
+        background: rgba(16, 225, 225, 0.08);
+      }
+      .attr-hidden {
+        user-select: none;
+      }
+      .lang-container {
+        margin-bottom: 24px;
+        display: flex;
+        justify-content: center;
+        gap: 14px;
+      }
+      .lang-btn {
+        cursor: pointer;
+        padding: 0.5em 1.2em;
+        border-radius: 12px;
+        border: 2px solid #24b8cc;
+        background: transparent;
+        font-weight: 600;
+        color: #24bccd;
+        transition: all 0.2s ease;
+        user-select: none;
+      }
+      .lang-btn.active {
+        background: #24bccd;
+        color: white;
+      }
+      .phone-panel {
+        max-width: 500px;
+        width: 100%;
+        height: 720px;
+        background: #1b2240;
+        border-radius: 38px;
+        box-shadow: 0 0 40px #1b3c63cc;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        user-select: none;
+        overflow: hidden;
+        transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+      }
+      .phone-panel[tabindex="0"]:focus {
+        outline: 2px solid #24b8cc;
+      }
+      .phone-panel-header {
+        height: 70px;
+        background: linear-gradient(90deg, #22bbda, #0787d4);
+        border-radius: 30px;
+        font-weight: 700;
+        font-size: 1.8rem;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        letter-spacing: 0.08em;
+        margin-bottom: 28px;
+      }
+      .phone-panel-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 18px;
+        justify-content: center;
+      }
+      .phone-panel-button {
+        background: #2787c5;
+        color: white;
+        padding: 0.8em 2.2em;
+        border-radius: 28px;
+        font-weight: 600;
+        font-size: 1.15rem;
+        cursor: pointer;
+        flex: 1 1 130px;
+        text-align: center;
+        user-select: none;
+        transition: all 0.2s ease;
+      }
+      .phone-panel-button:hover {
+        filter: brightness(1.15);
+      }
+      .phone-panel-button.active {
+        background: #0b83bf;
+        box-shadow: 0 0 20px #0b83bfaa;
+      }
+      .phone-panel-content {
+        margin-top: 35px;
+        background: #101a32;
+        border-radius: 24px;
+        flex-grow: 1;
+        padding: 30px;
+        font-family: "Courier New", monospace;
+        font-size: 1.05rem;
+        color: #ced9ff;
+        overflow-y: auto;
+        user-select: text;
+      }
+      .phone-panel-footer {
+        margin-top: 20px;
+        font-style: italic;
+        color: #7587a5;
+        text-align: right;
+        user-select: none;
+        font-size: 0.9rem;
+      }
+      .india-map-box {
+        max-width: 320px;
+        background: #17243c;
+        border-radius: 32px;
+        padding: 28px 22px 36px;
+        box-shadow: 0 0 28px #186b9ccc;
+        text-align: center;
+        color: #33b8bf;
+        user-select: none;
+        position: relative;
+        margin: 0 auto 3rem;
+      }
+      .india-map-flag {
+        position: absolute;
+        top: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 40px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px #3db9dbaa;
+        background: white;
+      }
+      .india-map-svg {
+        margin-top: 12px;
+        width: 150px;
+        height: 220px;
+        filter: drop-shadow(0 0 14px #186b9cb3);
+      }
+      .india-map-title {
+        font-size: 1.7rem;
+        font-weight: 900;
+        margin-top: 25px;
+        margin-bottom: 14px;
+        letter-spacing: 0.04em;
+      }
+      .india-map-desc {
+        font-size: 1.04rem;
+        margin-bottom: 26px;
+        color: #a4b4c2;
+        line-height: 1.3;
+        user-select: none;
+      }
+      .pill-container {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+        margin-bottom: 28px;
+      }
+      .pill {
+        background: #1c7d84;
+        color: white;
+        padding: 7px 22px;
+        border-radius: 9999px;
+        font-weight: 700;
+        cursor: default;
+        user-select: none;
+        letter-spacing: 0.04em;
+      }
+      .pill.privacy {
+        background: #1664b1;
+      }
+      .pill-container + .pill-container {
+        margin-top: 0;
+        display: block;
+      }
+      .footer-desc {
+        font-size: 0.88rem;
+        color: #647897;
+        user-select: none;
+      }
+      .chat-container {
+        width: 100%;
+        max-width: 480px;
+        margin: 24px auto;
+      }
+      .chat-header {
+        text-align: center;
+        font-weight: 700;
+        font-size: 2rem;
+        margin-bottom: 20px;
+      }
+      .lang-btn-container {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        margin-bottom: 16px;
+      }
+      .lang-btn {
+        cursor: pointer;
+        padding: 0.6em 1.6em;
+        border-radius: 12px;
+        border: 2px solid #24b8cc;
+        background: none;
+        font-weight: 700;
+        user-select: none;
+        font-size: 1rem;
+        color: #24bccd;
+        transition: all 0.3s ease;
+        min-width: 100px;
+      }
+      .lang-btn.active {
+        background: #24bccd;
+        color: white;
+      }
+      .chat-box {
+        background: #0b172f;
+        border-radius: 24px;
+        padding: 20px 28px 28px;
+        min-height: 380px;
+        font-family: "Courier New", monospace;
+        font-size: 1.1rem;
+        color: #ced9ff;
+        overflow-y: auto;
+        user-select: text;
+      }
+      .chat-message {
+        display: flex;
+        margin-bottom: 18px;
+        align-items: flex-start;
+      }
+      .chat-message.user {
+        justify-content: flex-end;
+      }
+      .chat-message .msg-box {
+        max-width: 75%;
+        padding: 12px 18px;
+        border-radius: 24px;
+        line-height: 1.4;
+        font-weight: 500;
+        box-shadow: 0 3px 7px rgb(0 0 0 / 0.2);
+      }
+      .chat-message.user .msg-box {
+        background: #45b6d9;
+        color: #0e2230;
+        border-bottom-right-radius: 4px;
+      }
+      .chat-message.ai .msg-box {
+        background: #263a59;
+        color: #b6d0ff;
+        border-bottom-left-radius: 4px;
+      }
+      .chat-message img.avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 9999px;
+        object-fit: cover;
+        box-shadow: 0 0 7px #235580, 0 0 11px #0f7fb6;
+        margin-left: 12px;
+      }
+      .chat-message.user img.avatar {
+        margin-left: 0;
+        margin-right: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav
+      class="fixed w-full top-0 bg-[#18202fcc] backdrop-blur-md flex justify-between items-center px-8 py-4 z-50 shadow-lg"
+    >
+      <span class="shine-title attr-hidden">Arogya Raksha</span>
+      <div>
+        <a href="#features" class="text-gray-400 hover:text-cyan-300 mr-6">Features</a>
+        <a href="#benefits" class="text-gray-400 hover:text-cyan-300 mr-6"
+          >Benefits</a
+        >
+        <a href="#about" class="text-gray-400 hover:text-cyan-300 mr-6">About</a>
+        <a href="#future" class="text-gray-400 hover:text-cyan-300 mr-6">Future</a>
+        <a
+          href="#chat"
+          class="bg-gradient-to-r from-teal-500 to-blue-700 text-white px-4 py-2 rounded-lg font-semibold hover:scale-[1.03] transition"
+          >Try Now</a
+        >
+      </div>
+    </nav>
+    <main class="pt-24 max-w-7xl mx-auto px-6">
+      <section
+        class="flex flex-col md:flex-row gap-8 md:gap-12 items-center mb-20"
+        aria-label="Hero introduction"
+      >
+        <div class="md:w-1/2 text-center md:text-left max-w-lg mx-auto md:mx-0">
+          <span
+            role="document"
+            class="text-teal-400 text-[0.8rem] tracking-[0.22em] uppercase font-semibold block mb-3"
+            >Ai for Indian Healthcare</span
+          >
+          <h1
+            role="heading"
+            aria-level="1"
+            class="text-white text-5xl md:text-7xl tracking-tight font-extrabold leading-none md:leading-snug"
+          >
+            India's #1 Healthcare <br />
+            GenAI Platform
+          </h1>
+          <p role="document" class="text-gray-400 mt-5 max-w-md">
+            Combo of powerful AI & open healthcare sources <br />
+            — multilingual, secure, private and local.
+          </p>
+          <p role="document" class="text-gray-400 mt-4 max-w-md">
+            Tech X People, for trust, care, ethics,
+            <br />
+            and better outcomes.
+          </p>
+        </div>
+        <div
+          class="md:w-1/2 bg-[#1B2545] rounded-[1.8rem] p-10 shadow-glass md:max-w-[512px]"
+          role="complementary"
+          aria-label="Hero Card with AI signal details"
+        >
+          <svg
+            class="w-20 h-14 mb-1 animate-pulse glow-lg"
+            viewBox="0 0 100 60"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path
+              d="M10 30L30 30L40 10L50 50L60 30H90"
+              stroke="url(#pulseGradient)"
+              stroke-width="4"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <defs>
+              <linearGradient
+                id="pulseGradient"
+                x1="10"
+                y1="30"
+                x2="90"
+                y2="30"
+                gradientUnits="userSpaceOnUse"
+              >
+                <stop stop-color="#2BD4DE" />
+                <stop offset="1" stop-color="#16A6B9" />
+              </linearGradient>
+            </defs>
+          </svg>
+          <h3
+            class="uppercase text-teal-400 tracking-[0.06em] font-semibold text-center"
+          >
+            Signal : Reliable. Fast. Indian.
+          </h3>
+          <div class="flex gap-3 justify-center mt-7">
+            <span
+              role="button"
+              class="min-w-[110px] cursor-pointer py-1 px-5 shadow-glass text-teal-400 bg-white rounded-[1rem] hover:bg-teal-100 font-semibold transition"
+              >Data Localization</span
+            >
+            <span
+              role="button"
+              class="min-w-[100px] cursor-pointer py-1 px-5 shadow-glass text-blue-800 bg-white rounded-[1rem] hover:bg-blue-100 font-semibold transition"
+              >Privacy</span
+            >
+          </div>
+          <p class="mt-8 text-center text-gray-400 px-4 leading-relaxed">
+            Trusted by patients & providers for secure, accessible healthcare.
+          </p>
+        </div>
+      </section>
+
+      <section
+        class="flex md:flex-row flex-col gap-12 mb-24"
+        aria-label="Features and Interactive panel"
+      >
+        <section
+          aria-label="Features"
+          class="md:w-2/5 max-w-md"
+        >
+          <h2 class="shine-title mb-8 text-4xl font-extrabold">Features</h2>
+          <ul role="list" aria-label="List of features" class="space-y-6">
+            <li class="feature-card flex gap-5 cursor-pointer p-2 rounded-md hover:bg-cyan-900 hover:text-cyan-400">
+              <svg
+                class="w-7 h-7"
+                fill="none"
+                stroke="#22c6de"
+                stroke-width="2.5"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M16 11V7a4 4 0 00-8 0v4"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M5 9h14a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2z"
+                />
+              </svg>
+              Custom Medical Knowledge
+            </li>
+            <li class="feature-card flex gap-5 cursor-pointer p-2 rounded-md hover:bg-cyan-900 hover:text-cyan-400">
+              <svg
+                class="w-7 h-7 animate-spin text-indigo-500"
+                fill="none"
+                stroke="#22c6de"
+                stroke-width="2.5"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke-dasharray="4 2"
+                ></circle>
+              </svg>
+              Generative Voice & Video
+            </li>
+            <li class="feature-card flex gap-5 cursor-pointer p-2 rounded-md hover:bg-cyan-900 hover:text-cyan-400">
+              <svg
+                  class="w-7 h-7"
+                  fill="none"
+                  stroke="#22c6de"
+                  stroke-width="2.5"
+                  viewBox="0 0 24 24"
+                >
+                <rect
+                  x="7"
+                  y="4"
+                  width="10"
+                  height="16"
+                  rx="2"
+                />
+                <path
+                  stroke-linecap="round"
+                  d="M11 8h2"
+                />
+              </svg>
+              Dialogue Management (ବାର୍ତା ବ୍ୟବସ୍ଥାନ)
+            </li>
+            <li class="feature-card flex gap-5 cursor-pointer p-2 rounded-md hover:bg-cyan-900 hover:text-cyan-400">
+              <svg
+                  class="w-7 h-7"
+                  fill="none"
+                  stroke="#22c6de"
+                  stroke-width="2.5"
+                  viewBox="0 0 24 24"
+                >
+                <path
+                  d="M11 4v16"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M15 4v16"
+                  stroke-linecap="round"
+                />
+              </svg>
+              Omni-channel Experience
+            </li>
+          </ul>
+        </section>
+        <section aria-label="Interactive AI Panel" class="md:w-3/5">
+          <div
+            id="aiPanel"
+            class="phone-panel relative mx-auto"
+            tabindex="0"
+            aria-label="Interactive AI Panel"
+          >
+            <div class="phone-panel-header" aria-labelledby="aiPanelTitle" id="aiPanelTitle">Arogya Raksha</div>
+            <div class="phone-panel-buttons" role="tablist" aria-label="Panel feature tabs">
+              <button
+                class="phone-panel-button active"
+                role="tab"
+                id="tabChat"
+                aria-selected="true"
+                aria-controls="tabpanelChat"
+                tabindex="0"
+                data-tab="chat"
+              >
+                Chatbot
+              </button>
+              <button
+                class="phone-panel-button"
+                role="tab"
+                id="tabVideo"
+                aria-selected="false"
+                aria-controls="tabpanelVideo"
+                tabindex="-1"
+                data-tab="video"
+              >
+                Video Bot
+              </button>
+              <button
+                class="phone-panel-button"
+                role="tab"
+                id="tabDocs"
+                aria-selected="false"
+                aria-controls="tabpanelDocs"
+                tabindex="-1"
+                data-tab="docs"
+              >
+                Live Docs
+              </button>
+              <button
+                class="phone-panel-button"
+                role="tab"
+                id="tabWeb"
+                aria-selected="false"
+                aria-controls="tabpanelWeb"
+                tabindex="-1"
+                data-tab="web"
+              >
+                Web Pages
+              </button>
+              <button
+                class="phone-panel-button"
+                role="tab"
+                id="tabPrompt"
+                aria-selected="false"
+                aria-controls="tabpanelPrompt"
+                tabindex="-1"
+                data-tab="prompt"
+              >
+                Prompt
+              </button>
+            </div>
+            <div class="phone-panel-content" role="tabpanel" aria-live="polite" aria-atomic="true" id="panelContent" tabindex="0">
+              <!-- content set by JS -->
+            </div>
+            <div class="phone-panel-footer" aria-label="Data source information">
+              Classic NLP · GenAI Doc · Web Source
+            </div>
+          </div>
+        </section>
+      </section>
+      <section
+        id="benefits"
+        class="sectionBG"
+        aria-label="Why choose Arogya Raksha"
+      >
+        <div class="max-w-7xl mx-auto px-7 py-10">
+          <h2 class="shine-title text-center mb-10 text-4xl font-extrabold">
+            Why choose Arogya Raksha
+          </h2>
+          <ul class="list-disc list-inside text-gray-400 max-w-xl mx-auto space-y-4 text-lg">
+            <li>Complete data privacy, assuring Indian-hosted cloud security.</li>
+            <li>
+              Built on official guidelines and expert local medical knowledge.
+            </li>
+            <li>Frequently updated with latest disease alerts and advisories.</li>
+            <li>Planned voice and video AI for diverse learning needs.</li>
+            <li>
+              Full multilingual support including Odia, Hindi, Bengali and English.
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section id="future" class="sectionBG" aria-label="Future Plans">
+        <div class="max-w-7xl mx-auto px-7 py-10">
+          <h2 class="shine-title text-center mb-10 text-4xl font-extrabold">
+            Future Initiatives
+          </h2>
+          <div class="grid md:grid-cols-2 gap-8">
+            <div>
+              <h3 class="text-center text-teal-400 font-semibold text-2xl mb-2">
+                Clinical Support Tools
+              </h3>
+              <p class="text-gray-400 text-center max-w-md mx-auto">
+                Tools for healthcare professionals including triage & diagnostics.
+              </p>
+            </div>
+            <div>
+              <h3 class="text-center text-indigo-400 font-semibold text-2xl mb-2">
+                Community Health Analytics
+              </h3>
+              <p class="text-gray-400 text-center max-w-md mx-auto">
+                Anonymous health reports & visual analytics for disease patterns.
+              </p>
+            </div>
+            <div>
+              <h3 class="text-center text-cyan-400 font-semibold text-2xl mb-2">
+                Voice+Video AI
+              </h3>
+              <p class="text-gray-400 text-center max-w-md mx-auto">
+                Multi-lingual voice & video answers, improving accessibility.
+              </p>
+            </div>
+            <div>
+              <h3 class="text-center text-blue-400 font-semibold text-2xl mb-2">
+                API for Integrations
+              </h3>
+              <p class="text-gray-400 text-center max-w-md mx-auto">
+                Open APIs for easy platform integration in health apps & services.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section
+        id="about"
+        class="sectionBG"
+        aria-label="About Arogya Raksha"
+      >
+        <div class="max-w-7xl mx-auto px-7 py-10">
+          <h2 class="shine-title text-4xl text-center font-extrabold mb-8">
+            About
+          </h2>
+          <div class="md:flex md:gap-10 max-w-5xl mx-auto items-center">
+            <div class="text-gray-400 md:flex-1 mb-4 md:mb-0 leading-relaxed text-lg">
+              Arogya Raksha is a student-led AI healthcare solution designed to bridge medical knowledge gaps across India with multi-language support & advanced AI functionality.
+            </div>
+            <div class="md:flex-1 text-center text-teal-300 select-none" aria-hidden="true">
+              <svg height="120" width="120" viewBox="0 0 24 24" fill="none" stroke="#24bccd" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 8v4l3 3m-6 0l3-3" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    <section
+      id="chat"
+      class="sectionBG"
+      aria-label="Chat with Arogya Raksha"
+    >
+      <div class="max-w-3xl mx-auto px-7 py-10">
+        <h2 class="shine-title text-center mb-8 text-4xl font-extrabold">
+          Chat
+        </h2>
+        <div class="lang-container" role="tablist" aria-label="Select chat language">
+          <button class="lang-btn active" data-lang="en" aria-selected="true" role="tab" tabindex="0">English</button>
+          <button class="lang-btn" data-lang="hi" aria-selected="false" role="tab" tabindex="-1">Hindi</button>
+          <button class="lang-btn" data-lang="bn" aria-selected="false" role="tab" tabindex="-1">Bengali</button>
+          <button class="lang-btn" data-lang="or" aria-selected="false" role="tab" tabindex="-1">Odia</button>
+        </div>
+        <div class="chat-box" role="tabpanel" aria-live="polite" aria-atomic="true" tabindex="0" id="chatContent" ></div>
+      </div>
+    </section>
+    <footer class="py-7 flex justify-center items-center gap-6 nano mt-12 text-gray-400 text-sm">
+      <div>© 2025 Arogya Raksha · SIH Project by Student Team</div>
+    </footer>
+    <script>
+      // Interactive phone panel movement
+      const phonePanel = document.getElementById("aiPanel") || document.getElementById("aiPanel") || document.getElementById("aiPanel");
+      if (phonePanel) {
+        phonePanel.addEventListener("mousemove", (e) => {
+          const rect = phonePanel.getBoundingClientRect();
+          const centerX = rect.left + rect.width / 2;
+          const centerY = rect.top + rect.height / 2;
+          let dx = ((e.clientX - centerX) / (rect.width / 2)) * 20;
+          let dy = ((e.clientY - centerY) / (rect.height / 2)) * 20;
+          dx = Math.max(Math.min(dx, 20), -20);
+          dy = Math.max(Math.min(dy, 20), -20);
+          phonePanel.style.transform = `translate(${dx}px, ${dy}px) scale(1.05)`;
+        });
+        phonePanel.addEventListener("mouseleave", () => {
+          phonePanel.style.transform = "translate(0,0) scale(1)";
+        });
+      }
+      // Panel interaction and content switching
+      const panelButtons = {
+        chat: document.querySelector(".phone-panel-button[data-tab='chat']"),
+        video: document.querySelector(".phone-panel-button[data-tab='video']"),
+        docs: document.querySelector(".phone-panel-button[data-tab='docs']"),
+        web: document.querySelector(".phone-panel-button[data-tab='web']"),
+        prompt: document.querySelector(".phone-panel-button[data-tab='prompt']")
+      };
+
+      const panelContent = document.getElementById("panelContent");
+      const panelTexts = {
+        chat: `<b>Hi! I’m <span style="color:#24bccd">Arogya Raksha</span>.</b>
+          <br/>Your AI companion to answer health queries, provide training, and help with forms & templates.
+          <br/><br/>Explore multiple channels and customize your experience with various AI modes.`,
+        video: `<b>Video Bot Mode</b><br/><br/>
+          Watch health explainers, preventive guides, and AI-powered awareness videos.
+          <br/><video controls style="width:100%;border-radius:16px;margin-top:12px" src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm">Your browser does not support the video tag.</video>`,
+        docs: `<b>Live Docs</b><br/><br/>
+          Upload or choose official health guidelines, bulletins, and personal checklists.`,
+        web: `<b>Web Pages</b><br/><br/>
+          Instantly fetch trustworthy information and public health advisories.`,
+        prompt: `<b>Prompt Mode</b><br/><br/>
+          Provide custom instructions or select templates:<ul><li>Vaccination Form</li><li>Diet Plan</li><li>Health Queries</li></ul>`
+      };
+
+      for (const [key, btn] of Object.entries(panelButtons)) {
+        btn.addEventListener("click", () => {
+          for (const b of Object.values(panelButtons)) {
+            b.classList.remove("active");
+          }
+          btn.classList.add("active");
+          panelContent.innerHTML = panelTexts[key];
+        });
+      }
+      // Initialize default tab:
+      panelButtons.chat.classList.add("active");
+      panelContent.innerHTML = panelTexts.chat;
+
+      // Chat functionality with avatars
+      const userAvatars = [
+        "https://randomuser.me/api/portraits/men/1.jpg",
+        "https://randomuser.me/api/portraits/women/2.jpg",
+        "https://randomuser.me/api/portraits/men/3.jpg",
+        "https://randomuser.me/api/portraits/women/4.jpg",
+        "https://randomuser.me/api/portraits/men/5.jpg"
+      ];
+
+      const botAvatar = "https://img.icons8.com/color/48/000000/robot-2.png";
+
+      function getRandomUserAvatar() {
+        return userAvatars[Math.floor(Math.random() * userAvatars.length)];
+      }
+
+      const messages = {
+        en: [
+          {user: "Hello, what are the symptoms of dengue?", ai: "Common dengue symptoms: high fever, headache, joint pain, and rash. Seek medical help if suspected."},
+          {user: "How can I prevent mosquito-borne diseases?", ai: "Use mosquito nets, wear full sleeves, and avoid stagnant water. Keep surroundings clean."},
+          {user: "Can you give me tips for child nutrition during monsoon?", ai: "Ensure boiled water, fresh fruit, and green vegetables. Always wash hands before meals."},
+          {user: "Tell me about diabetes in simple words.", ai: "Diabetes means high blood sugar. Eating well and exercising helps keep it controlled."}
+        ],
+        hi: [
+          {user: "डेंगू के लक्षण क्या हैं?", ai: "डेंगू के सामान्य लक्षणों में तेज बुखार, सिरदर्द, जोड़ों में दर्द और चकत्ते शामिल हैं। डॉक्टर से मिलें।"},
+          {user: "मच्छरों द्वारा होने वाली बीमारियों से कैसे बचें?", ai: "मच्छरानी का उपयोग करें, पूरी आस्तीन के कपड़े पहनें, और जल जमा होने से बचें। साफ-सफाई रखें।"},
+          {user: "बारिश के मौसम में बच्चों के लिए पोषण सुझाव दें।", ai: "उबले हुए पानी, ताजा फल और हरी सब्जियां दें। खाने से पहले हाथ धोएं।"},
+          {user: "डायबिटीज क्या है?", ai: "डायबिटीज का मतलब है रक्त में शुगर का बढ़ना। सही आहार और व्यायाम जरूरी है।"}
+        ],
+        bn: [
+          {user: "ডেঙ্গুর লক্ষণগুলি কী?", ai: "ডেঙ্গুর সাধারণ লক্ষণগুলির মধ্যে রয়েছে জ্বর, মাথাব্যথা, যৌথ ব্যথা এবং চামড়ার রোগ। ডাক্তারের পরামর্শ নিন।"},
+          {user: "মাছির কারণে যে রোগ হয়, তা থেকে কিভাবে বাঁচবেন?", ai: "মশারি ব্যবহার করুন, পুরোটাই হাত ঢেকে থাকা জামা পড়ুন, এবং জলে যেন মশার ডিম না পড়ে সে ভাবে রাখুন।"},
+          {user: "বর্ষাকালে শিশুদের জন্য পুষ্টির পরামর্শ দিন।", ai: "ফুটানো পানি, তাজা ফল এবং সবুজ শাকসবজি দিন। খাওয়ার আগেই হাত ধুয়ে নিন।"},
+          {user: "মধুমেহ কী?", ai: "মধুমেহ বা ডায়বেটিস হলো রক্তে চিনির পরিমাণ বেড়ে যাওয়া। সঠিক খাবার এবং ব্যায়াম প্রয়োজন।"}
+        ],
+        or: [
+          {user: "ଡେଙ୍ଗୁ ର ଲକ୍ଷଣ କ’ଣ?", ai: "ଡେଙ୍ଗୁ ର ସାଧାରଣ ଲକ୍ଷଣ ହେଉଛି ଉଚ୍ଚ ଜ୍ୱର, ମୁଣ୍ଡ ବେଥା, ଯୋଡା ବେଥା ଏବଂ ଚାମଡ଼ା ରୋଗ।"},
+          {user: "ମଶା ଦ୍ୱାରା ହେଉଥିବା ରୋଗରୁ କିପରି ବଚିବେ?", ai: "ମଶା ବାସକାର ଦେଇଁ, ପୁରି ହାତ ଢାକିବା ଟାଣି, ଓ ରହୁଥିବା ପାଣି ନଷ୍ଟ କରନ୍ତୁ।"},
+          {user: "ବର୍ଷା ସମୟରେ ଶିଶୁମାନଙ୍କର ପୋଷଣ ସହଯୋଗ କରନ୍ତୁ।", ai: "ଫୁଟିଥିବା ଜଳ, ତାଜା ଫଳ ଓ ସବୁଜ ସାଗ ଦିଅନ୍ତୁ। ଖାଇବା ପୂର୍ବରୁ ହାତ ଧୁଆନ୍ତୁ।"}
+        ]
+      };
+
+      let currentUserAvatar = getRandomUserAvatar();
+
+      function renderChat(language = "en") {
+        const chatArea = document.getElementById("chatContent");
+        chatArea.innerHTML = "";
+        messages[language].forEach(({ user, ai }) => {
+          const userDiv = document.createElement("div");
+          userDiv.className = "chat-message user";
+          const userAvatar = document.createElement("img");
+          userAvatar.src = currentUserAvatar;
+          userAvatar.alt = "User avatar";
+          userAvatar.className = "avatar";
+          userDiv.appendChild(userAvatar);
+
+          const userMsg = document.createElement("div");
+          userMsg.className = "msg-box";
+          userMsg.textContent = user;
+          userDiv.appendChild(userMsg);
+
+          chatArea.appendChild(userDiv);
+
+          const aiDiv = document.createElement("div");
+          aiDiv.className = "chat-message ai";
+          const aiAvatar = document.createElement("img");
+          aiAvatar.src = "https://img.icons8.com/color/48/000000/robot-2.png";
+          aiAvatar.alt = "AI avatar";
+          aiAvatar.className = "avatar";
+          aiDiv.appendChild(aiAvatar);
+
+          const aiMsg = document.createElement("div");
+          aiMsg.className = "msg-box";
+          aiMsg.textContent = ai;
+          aiDiv.appendChild(aiMsg);
+
+          chatArea.appendChild(aiDiv);
+        });
+      }
+
+      document.querySelectorAll(".lang-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document
+            .querySelectorAll(".lang-btn")
+            .forEach((btn) => btn.classList.remove("active"));
+          btn.classList.add("active");
+          currentUserAvatar = getRandomUserAvatar();
+          renderChat(btn.dataset.lang);
+        });
+      });
+
+      document.addEventListener("DOMContentLoaded", () => {
+        renderChat("en");
+      });
+    </script>
+  </body>
+</html>
